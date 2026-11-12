@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11:11 — Mi coincidencia favorita 💜</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
+
+:root {
+  --background: #090314;
+  --panel: #150b28;
+  --purple: #c5a4ff;
+  --pink: #ffb9dd;
+  --gold: #ffe699;
+  --white: #fff7ff;
+  --muted: #cbbede;
+  --border: rgba(217, 184, 255, 0.22);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--white);
+  background: 
+    radial-gradient(circle at 50% 0%, #3a1c6a 0%, transparent 45%),
+    radial-gradient(circle at 90% 30%, #280b35 0%, transparent 40%),
+    radial-gradient(circle at 10% 80%, #1f0c38 0%, transparent 50%),
+    var(--background);
+  font-family: 'DM Sans', sans-serif;
+  cursor: default;
+}
+
+button { font: inherit; }
+
+/* Pantalla de Inicio / Welcome Overlay con Animación */
+#welcomeOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: radial-gradient(circle at 50% 40%, #2a114d 0%, #090314 80%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#welcomeOverlay.hidden-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.welcome-card {
+  max-width: 420px;
+  padding: 35px 28px;
+  border: 1px solid rgba(255, 185, 221, 0.4);
+  border-radius: 30px;
+  background: rgba(25, 12, 45, 0.85);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 35px rgba(185, 154, 255, 0.25);
+  animation: float 4s ease-in-out infinite;
+}
+
+.welcome-img-container {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 15px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 185, 221, 0.5);
+  box-shadow: 0 0 20px rgba(255, 185, 221, 0.3);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.welcome-card h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  margin: 10px 0;
+  color: var(--pink);
+  text-shadow: 0 0 20px rgba(255, 185, 221, 0.5);
+}
+
+.welcome-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+/* Canvas de estrellas y cursor estelar */
+#spaceCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cursor-particle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 12px;
+  transform: translate(-50%, -50%);
+  animation: fadeOutParticle 0.8s forwards linear;
+  z-index: 9999;
+}
+
+@keyframes fadeOutParticle {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -150%) scale(0.4); }
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 65px 20px 45px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.moon {
+  display: inline-block;
+  color: var(--pink);
+  font-size: 50px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 30px var(--pink);
+  animation: float 4s ease-in-out infinite;
+}
+
+.eyebrow {
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(75px, 16vw, 140px);
+  line-height: 1;
+  margin: 0;
+  background: linear-gradient(180deg, #ffffff 30%, #e0beff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(197, 164, 255, 0.45));
+}
+
+.hero h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(23px, 4vw, 34px);
+  font-weight: 500;
+  margin: 16px 0;
+  color: var(--pink);
+}
+
+.intro {
+  color: var(--muted);
+  max-width: 500px;
+  line-height: 1.8;
+  margin: 0 auto 26px;
+  font-size: 14.5px;
+}
+
+.clock-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 30px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: var(--pink);
+  box-shadow: 0 0 25px rgba(185, 154, 255, 0.12);
+}
+
+.clock span { animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.clock-note {
+  font-size: 12.5px;
+  color: var(--purple);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.music-btn, .meaning-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 185, 221, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  color: var(--white);
+  padding: 11px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.music-btn .note-icon {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.music-btn.playing .note-icon {
+  animation: spinNote 2s linear infinite;
+}
+
+@keyframes spinNote {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(15deg) scale(1.2); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.music-btn:hover, .meaning-btn:hover {
+  background: rgba(255, 185, 221, 0.15);
+  border-color: var(--pink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 185, 221, 0.25);
+}
+
+main {
+  width: min(100% - 32px, 940px);
+  margin: 0 auto;
+}
+
+.calendar-section {
+  text-align: center;
+  padding: 45px 0 65px;
+}
+
+.calendar-section h2, .surprise-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 4.5vw, 36px);
+  font-weight: 500;
+  margin: 0 0 14px;
+}
+
+.section-description {
+  color: var(--muted);
+  max-width: 530px;
+  font-size: 13.5px;
+  line-height: 1.8;
+  margin: 0 auto 32px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.month {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 20px 8px;
+  color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.month-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--purple);
+}
+
+.month-name { font-weight: 600; font-size: 13.5px; }
+.month-date { color: var(--muted); font-size: 11px; }
+.month-status { color: #b7a8ca; font-size: 10.5px; }
+
+.month.locked { opacity: 0.5; cursor: not-allowed; }
+
+.month.available {
+  cursor: pointer;
+  border-color: rgba(255, 185, 221, 0.45);
+  background: linear-gradient(150deg, rgba(151, 104, 210, 0.2), rgba(255, 185, 221, 0.06));
+}
+
+.month.available .month-number, .month.available .month-status { color: var(--pink); }
+
+.month.available:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(185, 154, 255, 0.3);
+  border-color: var(--pink);
+}
+
+.month[data-month="november"] {
+  border-color: var(--pink) !important;
+  box-shadow: 0 0 30px rgba(255, 185, 221, 0.5);
+  background: linear-gradient(150deg, rgba(185, 154, 255, 0.35), rgba(255, 185, 221, 0.18));
+}
+
+/* Jardín Interactivo */
+.garden {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 45px 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 185, 221, 0.35);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(25, 13, 48, 0.85), rgba(13, 5, 28, 0.9));
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(185, 154, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.garden-pot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+  min-height: 80px;
+}
+
+.plant-item {
+  font-size: 44px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: plantPop 0.5s ease;
+  filter: drop-shadow(0 0 12px rgba(255, 185, 221, 0.4));
+  cursor: pointer;
+}
+
+@keyframes plantPop {
+  0% { transform: scale(0) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.plant-item:hover { 
+  transform: scale(1.25) rotate(10deg); 
+  filter: drop-shadow(0 0 18px rgba(255, 185, 221, 0.8));
+}
+
+.plant-hint {
+  font-size: 11.5px;
+  color: var(--pink);
+  margin-top: -5px;
+  margin-bottom: 8px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.garden-text { color: var(--muted); font-size: 14px; line-height: 1.8; margin-top: 10px; }
+
+.garden-progress {
+  height: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  max-width: 340px;
+  margin: 18px auto 8px;
+  border: 1px solid rgba(255, 185, 221, 0.2);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+}
+
+#gardenBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #b99aff, #ffb9dd, #ffe699);
+  border-radius: 999px;
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(255, 185, 221, 0.7);
+}
+
+.garden-count { font-size: 12.5px; color: var(--pink); font-weight: 500; letter-spacing: 1px; }
+
+.surprise-section {
+  padding: 70px 10px;
+  text-align: center;
+}
+
+.surprise-section > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+.surprise-button, .close-button, .wish-btn, .enter-btn, .unlock-btn {
+  border: 1px solid rgba(255, 185, 221, 0.6);
+  border-radius: 50px;
+  padding: 13px 28px;
+  margin-top: 16px;
+  color: #fff8ff;
+  background: linear-gradient(120deg, #8155b9, #b25f9b);
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 4px 22px rgba(178, 95, 155, 0.4);
+  transition: all 0.3s ease;
+}
+
+.surprise-button:hover, .close-button:hover, .wish-btn:hover, .enter-btn:hover, .unlock-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(255, 185, 221, 0.6);
+  background: linear-gradient(120deg, #9364ce, #c96bba);
+}
+
+.final-surprise {
+  max-width: 480px;
+  margin: 28px auto 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.final-surprise p {
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.surprise-heart { font-size: 32px; animation: pulse 1.2s infinite; margin-bottom: 8px; }
+
+/* Caja de contraseña cuando llega a la última tarjeta */
+.locked-surprise-box {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px dashed rgba(255, 185, 221, 0.5);
+  border-radius: 16px;
+  background: rgba(15, 7, 30, 0.6);
+  text-align: center;
+}
+
+.locked-surprise-box input {
+  width: 85%;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  outline: none;
+}
+
+.locked-surprise-box input:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 10px rgba(255, 185, 221, 0.3);
+}
+
+.error-msg {
+  color: #ff99aa;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+footer {
+  padding: 35px 15px 45px;
+  text-align: center;
+  color: #a99abb;
+  font-size: 12px;
+}
+
+/* Modales generales */
+.modal[hidden], .final-surprise[hidden], .locked-surprise-box[hidden] { display: none !important; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 2, 12, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.letter {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 480px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: 30px 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 185, 221, 0.5);
+  border-radius: 26px;
+  background: linear-gradient(145deg, #180d2e, #120722);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7), 0 0 35px rgba(185, 154, 255, 0.25);
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.close-letter {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  color: var(--pink);
+  font-size: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.close-letter:hover { background: rgba(255, 185, 221, 0.2); }
+
+.letter-decoration { font-size: 34px; color: var(--pink); margin-bottom: 6px; }
+
+.letter .eyebrow { font-size: 9.5px; letter-spacing: 2.5px; margin-bottom: 8px; }
+
+.letter h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: clamp(22px, 5vw, 28px);
+  margin: 0;
+  color: #fff0ff;
+}
+
+.letter-divider { color: var(--pink); margin: 14px 0; font-size: 13px; opacity: 0.8; }
+
+.letter-message {
+  color: #e6d9f3;
+  font-size: 13.5px;
+  line-height: 1.85;
+  text-align: left;
+}
+
+.letter-message p { margin: 0 0 14px; }
+.letter-message .special-date { color: var(--pink); font-weight: 700; }
+
+.meaning-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  text-align: left;
+}
+
+.meaning-list li {
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 185, 221, 0.15);
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.meaning-list li strong {
+  color: var(--pink);
+  display: block;
+  margin-bottom: 3px;
+  font-size: 13.5px;
+}
+
+.wish-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.wish-list li {
+  padding: 7px 10px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border-left: 3px solid var(--purple);
+  font-size: 13px;
+}
+
+.letter-signature {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--pink);
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+.close-button { width: 100%; margin-top: 20px; font-size: 13px; }
+
+.wishes-modal-content {
+  width: min(100%, 550px) !important;
+  max-height: 85dvh !important;
+  text-align: left !important;
+}
+
+.wishes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-top: 15px;
+}
+
+.wish-card-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 185, 221, 0.15);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #f1e6ff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wish-card-item span {
+  color: var(--pink);
+  font-weight: 700;
+  min-width: 25px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+::-webkit-scrollbar-thumb { background: rgba(255,185,221,0.3); border-radius: 10px; }
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 150;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -30px;
+  animation: caer 2.6s ease-in forwards;
+}
+
+@keyframes caer {
+  to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+@media(max-width: 600px) {
+  .calendar { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .month { padding: 16px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Pantalla de Inicio / Welcome Overlay con la imagen agregada -->
+<div id="welcomeOverlay">
+  <div class="welcome-card">
+    <div class="welcome-img-container">
+      <img src="images.png" alt="Eres mi deseo cada 11:11">
+    </div>
+    <p class="eyebrow">UN DETALLE ESPECIAL</p>
+    <h1>11:11</h1>
+    <p>Preparé un espacio mágico para ti... ¿Lista para pedir tu deseo?</p>
+    <button class="enter-btn" id="enterBtn" type="button">Abrir mi regalo 💜</button>
+  </div>
+</div>
+
+<canvas id="spaceCanvas"></canvas>
+<div id="confetti"></div>
+
+<header class="hero">
+  <div class="moon">☾</div>
+  <h1>11:11</h1>
+  <h2>Mi coincidencia favorita 💜</h2>
+  <p class="intro">Hay coincidencias bonitas, pero la más bonita de todas fue habernos encontrado en este universo.</p>
+  
+  <div class="clock-wrapper">
+    <div class="clock">11:11 <span>♡</span></div>
+    <p class="clock-note" id="countdown">Calculando tu deseo...</p>
+  </div>
+
+  <div class="actions-container">
+    <button id="musicBtn" class="music-btn" type="button">
+      <span class="note-icon">♪</span> <span id="musicBtnText">Reproducir música especial</span>
+    </button>
+    <button id="meaningBtn" class="meaning-btn" type="button">
+      ✨ ¿Qué significa 11:11?
+    </button>
+  </div>
+
+  <audio id="music" loop preload="auto">
+    <source src="music/cancion.mp3" type="audio/mpeg">
+  </audio>
+</header>
+
+<main>
+  <section class="calendar-section">
+    <p class="eyebrow">NUESTRO PEQUEÑO UNIVERSO</p>
+    <h2>Una coincidencia cada mes</h2>
+    <p class="section-description">Doce meses, doce oportunidades para recordar. Septiembre, Octubre y especialmente Noviembre guardan un trocito de corazón.</p>
+    
+    <div class="calendar">
+      <button class="month locked" disabled><span class="month-number">01</span><span class="month-name">Enero</span><span class="month-date">01 · 01</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">02</span><span class="month-name">Febrero</span><span class="month-date">02 · 02</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">03</span><span class="month-name">Marzo</span><span class="month-date">03 · 03</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">04</span><span class="month-name">Abril</span><span class="month-date">04 · 04</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">05</span><span class="month-name">Mayo</span><span class="month-date">05 · 05</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">06</span><span class="month-name">Junio</span><span class="month-date">06 · 06</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">07</span><span class="month-name">Julio</span><span class="month-date">07 · 07</span><span class="month-status">Próximamente ♡</span></button>
+      <button class="month locked" disabled><span class="month-number">08</span><span class="month-name">Agosto</span><span class="month-date">08 · 08</span><span class="month-status">Próximamente ♡</span></button>
+      
+      <button class="month available" type="button" data-month="september">
+        <span class="month-number">09</span><span class="month-name">Septiembre</span><span class="month-date">09 · 09</span><span class="month-status">Abrir mi carta ♡</span>
+      </button>
+      <button class="month available" type="button" data-month="october">
+        <span class="month-number">10</span><span class="month-name">Octubre</span><span class="month-date">10 · 10</span><span class="month-status">Abrir mi carta ♡</span>
+      </button>
+      <button class="month available" type="button" data-month="november">
+        <span class="month-number">11</span><span class="month-name">Noviembre</span><span class="month-date">11 · 11</span><span class="month-status">Pedir mi deseo ✨</span>
+      </button>
+      
+      <button class="month locked" disabled><span class="month-number">12</span><span class="month-name">Diciembre</span><span class="month-date">12 · 12</span><span class="month-status">Próximamente ♡</span></button>
+    </div>
+  </section>
+
+  <!-- Jardín Interactivo con Mensajes por Planta -->
+  <section class="garden">
+    <p class="eyebrow">TU JARDINCITO ESPECIAL</p>
+    <h2>Hoy floreciste un poquito más</h2>
+    <div class="plant-hint" id="plantHint" hidden>✨ ¡Haz clic en tus plantitas para leer sus mensajes! ✨</div>
+    <div class="garden-pot" id="gardenPot">
+      <div class="plant-item" data-plant="0" title="Haz clic para ver su mensaje">🌱</div>
+    </div>
+    <p class="garden-text" id="gardenText">Abre los meses disponibles para regar y hacer crecer tu jardincito.</p>
+    <div class="garden-progress"><div id="gardenBar"></div></div>
+    <p class="garden-count" id="gardenCount">0 de 3 cartitas descubiertas</p>
+  </section>
+
+  <!-- Sección de Preguntas Sorpresa y Cierre Bloqueado -->
+  <section class="surprise-section">
+    <p class="eyebrow">ANTES DE QUE TE VAYAS...</p>
+    <h2>Tengo una última pregunta</h2>
+    <p id="surpriseQuestionText">Cargando una sorpresita para ti...</p>
+    <button class="surprise-button" id="surpriseButton" type="button">Descubrir sorpresa ✨</button>
+    
+    <div class="final-surprise" id="finalSurprise" hidden>
+      <div class="surprise-heart">💗</div>
+      <p id="surpriseAnswerText">Aquí aparecerá la magia...</p>
+
+      <!-- Caja con contraseña integrada que aparece únicamente en la última pregunta -->
+      <div class="locked-surprise-box" id="lockedBox" hidden>
+        <p style="font-size: 13px; color: var(--pink); margin-bottom: 8px; font-weight: 500;">🔒 Este último sobre está con cerrojo. Ingresa la contraseña (Pista: 11:11 o 4 de septiembre)</p>
+        <input type="text" id="passwordInput" placeholder="Escribe la contraseña...">
+        <br>
+        <button class="unlock-btn" id="unlockBtn" type="button" style="padding: 8px 20px; font-size: 12.5px; margin-top: 10px;">Desbloquear ♡</button>
+        <div class="error-msg" id="errorMsg" hidden>Ups, contraseña incorrecta. Inténtalo de nuevo 💜</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>♡</p>
+  <p>Hoy, mañana y en cada coincidencia del destino. ✨</p>
+</footer>
+
+<!-- Modal de Cartas Principales -->
+<div class="modal" id="letterModal" hidden>
+  <div class="modal-backdrop" data-close="true"></div>
+  <section class="letter" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+    <button class="close-letter" id="closeLetter" type="button">×</button>
+    <div class="letter-decoration">♡</div>
+    <p class="eyebrow" id="letterEyebrow">UNA CARTITA PARA TI</p>
+    <h2 id="letterTitle">Mi Gabi bonita</h2>
+    <div class="letter-divider">✦ · ♡ · ✦</div>
+    <div class="letter-message" id="letterMessage"></div>
+    <p class="letter-signature" id="letterSignature">Con muchísimo cariño, Tonycito 💜</p>
+    <button class="close-button" id="closeLetterButton" type="button">Guardar en mi corazón ♡</button>
+  </section>
+</div>
+
+<!-- Modal para el Significado del 11:11 -->
+<div class="modal" id="meaningModal" hidden>
+  <div class="modal-backdrop" data-close-meaning="true"></div>
+  <section class="letter" role="dialog" aria-modal="true">
+    <button class="close-letter" id="closeMeaningModal" type="button">×</button>
+    <div class="letter-decoration">🌟</div>
+    <p class="eyebrow">MAGIA Y UNIVERSO</p>
+    <h2>¿Qué significa 11:11?</h2>
+    <div class="letter-divider">✦ · ♡ · ✦</div>
+    
+    <ul class="meaning-list">
+      <li>
+        <strong>✨ "Eres mi 11:11"</strong>
+        Cuando alguien te dice esto, significa que eres un deseo profundo hecho realidad y que tu llegada se siente como una coincidencia mágica y un regalo del universo.
+      </li>
+      <li>
+        <strong>💜 Sincronía emocional en pareja</strong>
+        Representa una etapa de armonía, complicidad y madurez donde las personas se entienden sin necesidad de palabras.
+      </li>
+      <li>
+        <strong>🌿 Nuevos comienzos</strong>
+        Se asocia con la apertura del corazón, indicando que estás lista para atraer momentos de paz mental y propósitos hermosos para tu vida.
+      </li>
+      <li>
+        <strong>⭐ El momento de pedir un deseo</strong>
+        Ver el reloj a las 11:11 es una invitación a enfocar pensamientos positivos, agradecer y manifestar amor, paz y lindos recuerdos (como cuidar con tanto cariño a Gary o sonreír todos los días).
+      </li>
+    </ul>
+
+    <button class="close-button" id="closeMeaningBtn" type="button" style="margin-top: 15px;">Guardar esta magia en mi corazón ♡</button>
+  </section>
+</div>
+
+<!-- Modal para los Mensajes de las Plantitas -->
+<div class="modal" id="plantModal" hidden>
+  <div class="modal-backdrop" data-close-plant="true"></div>
+  <section class="letter" role="dialog" aria-modal="true">
+    <button class="close-letter" id="closePlantModal" type="button">×</button>
+    <div class="letter-decoration" id="plantModalIcon">🌱</div>
+    <p class="eyebrow" id="plantModalEyebrow">MENSAJE DE TU JARDÍN</p>
+    <h2 id="plantModalTitle">Brotes del 11:11</h2>
+    <div class="letter-divider">✦ · ♡ · ✦</div>
+    <div class="letter-message" id="plantModalMessage" style="text-align: center; font-size: 14.5px; line-height: 1.9;"></div>
+    <button class="close-button" id="closePlantBtn" type="button" style="margin-top: 20px;">Seguir admirando mi jardín ♡</button>
+  </section>
+</div>
+
+<!-- Modal de Deseos Extras -->
+<div class="modal" id="wishesModal" hidden>
+  <div class="modal-backdrop" data-close-wishes="true"></div>
+  <section class="letter wishes-modal-content" role="dialog" aria-modal="true">
+    <button class="close-letter" id="closeWishesModal" type="button">×</button>
+    <div class="letter-decoration">✨</div>
+    <p class="eyebrow">UNIVERSO INFINITO</p>
+    <h2>Más deseos para ti</h2>
+    <div class="letter-divider">✦ · ♡ · ✦</div>
+    <p style="font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 10px;">
+      Porque un solo momento o 11 palabras no bastan para desearte todo lo bonito de esta vida.
+    </p>
+    <div class="wishes-grid" id="wishesContainer"></div>
+    <button class="close-button" id="closeWishesBtn" type="button" style="margin-top: 15px;">Guardar estos deseos en mi corazón ♡</button>
+  </section>
+</div>
+
+<script>
+/* 1. Control de la Pantalla de Inicio (Welcome Overlay) */
+const welcomeOverlay = document.getElementById("welcomeOverlay");
+const enterBtn = document.getElementById("enterBtn");
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+const musicBtnText = document.getElementById("musicBtnText");
+
+enterBtn.addEventListener("click", () => {
+  welcomeOverlay.classList.add("hidden-overlay");
+  lanzarConfetti();
+  
+  if (music) {
+    music.play().then(() => {
+      musicBtn.classList.add("playing");
+      musicBtnText.textContent = "Pausar música especial";
+    }).catch(() => {
+      musicBtnText.textContent = "♪ Coloca cancion.mp3 en /music";
+    });
+  }
+});
+
+/* 2. Fondo Estelar Canvas + Estrellas Fugaces */
+const canvas = document.getElementById('spaceCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  createStars();
+}
+
+function createStars() {
+  stars = [];
+  const numStars = Math.floor((canvas.width * canvas.height) / 2800);
+  for (let i = 0; i < numStars; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.6,
+      alpha: Math.random(),
+      speed: 0.004 + Math.random() * 0.012
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(star => {
+    star.alpha += star.speed;
+    if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 230, 255, ${Math.abs(star.alpha)})`;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = '#ffb9dd';
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+drawStars();
+
+/* 3. Cursor Estelar */
+const particleSymbols = ["✨", "💜", "⭐", "💫"];
+let lastX = 0, lastY = 0;
+window.addEventListener('mousemove', (e) => {
+  if (Math.abs(e.clientX - lastX) > 35 || Math.abs(e.clientY - lastY) > 35) {
+    lastX = e.clientX;
+    lastY = e.clientY;
+    const p = document.createElement('div');
+    p.className = 'cursor-particle';
+    p.textContent = particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+    p.style.left = e.clientX + 'px';
+    p.style.top = e.clientY + 'px';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 800);
+  }
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target.closest('button') || e.target.closest('.modal') || e.target.closest('#welcomeOverlay')) return;
+  for(let i=0; i<3; i++) {
+    const p = document.createElement('div');
+    p.className = 'cursor-particle';
+    p.textContent = "✨";
+    p.style.left = (e.clientX + (Math.random()*40 - 20)) + 'px';
+    p.style.top = (e.clientY + (Math.random()*40 - 20)) + 'px';
+    p.style.fontSize = (14 + Math.random()*8) + 'px';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1000);
+  }
+});
+
+/* 4. Sistema de Cartas */
+const modal = document.getElementById("letterModal");
+const closeLetter = document.getElementById("closeLetter");
+const closeLetterButton = document.getElementById("closeLetterButton");
+const letterTitle = document.getElementById("letterTitle");
+const letterEyebrow = document.getElementById("letterEyebrow");
+const letterMessage = document.getElementById("letterMessage");
+const letterSignature = document.getElementById("letterSignature");
+const monthButtons = document.querySelectorAll(".month.available");
+let openMonth = null;
+let lastFocusedElement = null;
+
+const letters = {
+  september: {
+    eyebrow: "SEPTIEMBRE, NUESTRO INICIO",
+    title: "Tres fechas especiales",
+    signature: "Con cariño, Tonycito 💜",
+    paragraphs: [
+      '<p><span class="special-date">4 de septiembre 💫</span><br>El día en que nos conocimos. Sin saberlo, ese día comenzó una historia que hoy significa muchísimo. Qué bonito que nuestros caminos se hayan encontrado.</p>',
+      '<p><span class="special-date">23 de septiembre 🎂</span><br>¡Feliz cumpleaños, Gabicita! Deseo que tu vida esté siempre llena de alegría, sueños cumplidos y muchísimo éxito. Gracias por ser tal como eres.</p>',
+      '<p><span class="special-date">26 de septiembre 🎂</span><br>También llega mi cumpleaños. No suelo hacer mucho lío por esa fecha, pero no voy a negar que mi mayor regalo fue compartirla contigo.</p>'
+    ]
+  },
+  october: {
+    eyebrow: "10 · 10 — PRIMERA COINCIDENCIA",
+    title: "Coincidir contigo",
+    signature: "Con cariño, Tonycito 💜",
+    paragraphs: [
+      '<p>Dicen que cuando ves números iguales es una señal del destino.</p>',
+      '<p>Hoy es 10/10 y si miramos el reloj a las 10:10… parece que todo coincide perfecto. Pero si te soy sincero, de todas las coincidencias del universo, la más bonita siempre será haber coincidido contigo. 💜</p>'
+    ]
+  },
+  november: {
+    eyebrow: "11 · 11 — EL DÍA DE LOS DESEOS",
+    title: "11 Deseos para Gabicita",
+    signature: "Siempre contigo, Tonycito 💜",
+    paragraphs: [
+      '<p>Dicen que a las 11:11 se pide un deseo al universo. Yo guardé 11 deseos especiales pensados para ti, sin presión y con mucho cariño:</p>',
+      '<ul class="wish-list">'+
+        '<li>1. ✨ Que tu cabecita descanse de tanto pensar.</li>'+
+        '<li>2. 💖 Que cuando tengas un día malo, no te lo guardes todo sola.</li>'+
+        '<li>3. 👁️ Que no te compares con nadie, porque tú eres tú.</li>'+
+        '<li>4. 🍰 Que te mires al espejo y te veas tan bonita como yo te veo.</li>'+
+        '<li>5. 🌿 Que tu jardincito siga floreciendo hermoso.</li>'+
+        '<li>6. ⏳ Que cuando te den cólicos, no te duela tanto y puedas descansar rico.</li>'+
+        '<li>7. 🕊️ Que sigamos coincidiendo, aunque sea en una hora como esta.</li>'+
+        '<li>8. 😼 Que sigas con tu carita de mala con los demás... pero no conmigo.</li>'+
+        '<li>9. 🤝 Que este 11:11 sepas que nunca estás sola.</li>'+
+        '<li>10. 💖 Que los regalitos que te mandé te hayan sacado aunque sea una sonrisita.</li>'+
+        '<li>11. 🌟 Que cuando te sientas solita, te acuerdes que hay alguien que piensa en ti a las 11:11.</li>'+
+      '<p style="text-align:center; margin-top:15px;">No tienes que contarme cuál es tu deseo número 11. Solo guárdalo en tu corazón y ten por seguro que se cumplirá. ✨</p>',
+      '<p style="text-align:center; margin-top:12px; font-size:12.5px; color:var(--muted); font-style:italic;">¿Por qué conformarnos solo con 11 deseos si pueden ser muchos más? La verdad es que cabría el universo entero pidiendo por ti...</p>',
+      '<div style="text-align:center; margin-top:15px;"><button id="open50Wishes" class="wish-btn" type="button">✨ Descubrir más deseos para ti ♡</button></div>'
+    ]
+  }
+};
+
+/* Modal del Significado del 11:11 */
+const meaningModal = document.getElementById("meaningModal");
+const meaningBtn = document.getElementById("meaningBtn");
+const closeMeaningModal = document.getElementById("closeMeaningModal");
+const closeMeaningBtn = document.getElementById("closeMeaningBtn");
+
+meaningBtn.addEventListener("click", () => {
+  meaningModal.hidden = false;
+  lanzarConfetti();
+});
+
+function cerrarMeaning() {
+  meaningModal.hidden = true;
+}
+
+closeMeaningModal.addEventListener("click", cerrarMeaning);
+closeMeaningBtn.addEventListener("click", cerrarMeaning);
+meaningModal.addEventListener("click", (e) => {
+  if (e.target.dataset.closeMeaning === "true") cerrarMeaning();
+});
+
+/* 5. Mensajes interactivos de cada plantita */
+const plantMessages = [
+  {
+    icon: "🌱",
+    title: "El Brote Inicial (Septiembre)",
+    text: "Igual que una semillita que empieza a germinar bajo la tierra, el 4 de septiembre nuestros caminos se cruzaron sin avisar. Cada día a tu lado hace que este brote crezca con más fuerza. ¡Nunca olvides lo mucho que vales! 💜"
+  },
+  {
+    icon: "🌿",
+    title: "La Ramita Fuerte (Octubre)",
+    text: "Como una ramita que se aferra y se fortalece con el viento, en octubre vimos que las coincidencias existen. Si un día el cansancio o los turnos largos pesan, recuerda que tienes una fortaleza increíble y un refugio seguro aquí conmigo. ✨"
+  },
+  {
+    icon: "🌷",
+    title: "El Tulipán del 11:11 (Noviembre)",
+    text: "Dicen que ver el 11:11 es señal de que un deseo profundo se está cumpliendo. Tú eres mi deseo más bonito hecho realidad. Que este tulipán te recuerde que mereces toda la paz, el descanso y las risas del mundo. 🌸"
+  },
+  {
+    icon: "🌸",
+    title: "La Flor en Plenitud (Jardín Completo)",
+    text: "¡Has regado tu jardincito por completo! Así como florece esta última flor, que tu vida se llene de colores, metas cumplidas y momentos felices. Eres mi 11-11 favorito hoy y en cada coincidencia del destino. 💗🌿"
+  }
+];
+
+const plantModal = document.getElementById("plantModal");
+const closePlantModal = document.getElementById("closePlantModal");
+const closePlantBtn = document.getElementById("closePlantBtn");
+const plantModalIcon = document.getElementById("plantModalIcon");
+const plantModalTitle = document.getElementById("plantModalTitle");
+const plantModalMessage = document.getElementById("plantModalMessage");
+
+function abrirMensajePlanta(index) {
+  const info = plantMessages[index] || plantMessages[0];
+  plantModalIcon.textContent = info.icon;
+  plantModalTitle.textContent = info.title;
+  plantModalMessage.textContent = info.text;
+  plantModal.hidden = false;
+  lanzarConfetti();
+}
+
+function cerrarMensajePlanta() {
+  plantModal.hidden = true;
+}
+
+closePlantModal.addEventListener("click", cerrarMensajePlanta);
+closePlantBtn.addEventListener("click", cerrarMensajePlanta);
+plantModal.addEventListener("click", (e) => {
+  if (e.target.dataset.closePlant === "true") cerrarMensajePlanta();
+});
+
+/* 6. Generador de Deseos Extras */
+const wishesModal = document.getElementById("wishesModal");
+const wishesContainer = document.getElementById("wishesContainer");
+const closeWishesModal = document.getElementById("closeWishesModal");
+const closeWishesBtn = document.getElementById("closeWishesBtn");
+
+const lista50Deseos = [
+"🌙 Que esta noche duermas rico.",
+ "💭 Que tu cabecita por fin se calme y deje de darle vueltas a todo.",
+  "🛌 Que cuando estés cansada, encuentres un ratito solo para ti.",
+" 🍵 Que no te falte algo calientito cuando te den cólicos.",
+ "🤕 Que cuando te duela algo, se te pase rapidito.",
+ "🪞 Que te veas al espejo y digas qué bonita estoy hoy.",
+" 💄 Que te sientas bonita sin tener que arreglarte mucho.",
+ "👑 Que nadie te haga sentir menos de lo que eres.",
+ "🌸 Que cada plantita que cuidas te recuerde que sí sabes cuidar bonito.",
+ "😂 Que hoy te rías y estes feliz, eso que me contagia.",
+"😼 Que sigas poniendo tu carita de mala con todos, pero conmigo te derritas un poquito.",
+ "🥺 Que cuando pongas carita de enojada, en el fondo te estés riendo.",
+ "💌 Que guardes mis mensajitos con cariño, aunque digas que no.",
+ "📦 Que el paquete de Olva te llegue rápido y completo.",
+ "🎁 Que cada regalito te saque una sonrisita, aunque sea chiquita.",
+ "🧸 Qu2e abraces algo rico cuando te sientas solita.",
+ "🤍 Que no te dé pena pedir ayuda cuando la necesites.",
+ "🫂 Que cuando tengas un día malo, sepas que puedes contarme.",
+"🌈 Que después de un día gris, te pase algo bonito.",
+"✨ Que tu semana sea alegre, sin estrés ni malas noticias.",
+"🍀 Que tengas suerte en eso que tanto quieres y no me has contado.",
+"📚 Que te vaya bien en todo lo que tienes pendiente.",
+"💰 Que tengas platita para tus gustitos, sin preocuparte.",
+"📱 Que tu celular no se te apague cuando más lo necesites.",
+ "🎵 Que escuches una canción que te ponga de buen humor.",
+ "🍓 Que comas algo rico hoy, sin apuro.",
+"💧 Que tomes tu tecito y te cuides, aunque no tengas ganas.",
+"🕊️ Que tengas paz en tu corazón, aunque afuera haya bulla.",
+ "🕰️ Que sigamos coincidiendo a las 11:11, como siempre.",
+ "🔮 Que creas un poquito en que las coincidencias no son casualidad.",
+"🌌 Que cuando mires el cielo, pienses en algo bonito.",
+ "🪄 Que se te cumpla ese deseo que pides en silencio.",
+"💫 Que cada 11:11 te acuerdes que hay alguien pensando en ti.",
+ "🤫 Que guardes este secreto: alguien piensa en ti más de lo que crees.",
+ "🌙 Que alguien, a las 11:11, esté pidiendo que duermas tranquila.",
+"💖 Que te dejes cuidar, aunque digas que puedes sola.",
+ "💭 Que cuando pienses en mí, sonrías aunque sea un poquito.",
+"📩 Que no te moleste que te escriba, que solo quiero verte bien.",
+ "🤝 Que no nos peleemos por tonterías.",
+];
+
+function cargar50Deseos() {
+  wishesContainer.innerHTML = "";
+  lista50Deseos.forEach((deseo, index) => {
+    const item = document.createElement("div");
+    item.className = "wish-card-item";
+    item.innerHTML = `<span>#${index + 1}</span> <div>${deseo}</div>`;
+    wishesContainer.appendChild(item);
+  });
+}
+cargar50Deseos();
+
+/* 7. Lista de Preguntas (La pregunta 6 bloqueada queda de última en la secuencia) */
+const ultimasPreguntas = [
+  {
+    pregunta: "Si pudieras pedir un solo deseo al universo a las 11:11... ¿me dejarías ser a mí quien te lo cumpla?",
+    respuesta: "💖 Te lo prometo... no importa cuántas veces mire el reloj, mi único deseo en esta vida siempre vas a ser tú. ✨",
+    isLocked: false
+  },
+  {
+    pregunta: "¿De casualidad eres la fecha de hoy? Porque para mí eres un 11 de 10...",
+    respuesta: "💌 Oye, si a las 11:11 los deseos se cumplen... ¿por qué tú apareciste antes de que pudiera pedirte?🌟",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Sabes por qué el reloj se detiene un instante a las 11:11?",
+    respuesta: "💜 Pienso que es porque el universo entero se queda un ratito en silencio admirando lo bonito que es tenerte en mi vida. ¡Feliz 11:11, Gabicita! ✨",
+    isLocked: false
+  },
+  {
+    pregunta: "Tengo que confesarte algo que solo pasa a las 11:11...",
+    respuesta: "🌙 Cada noche a la misma hora hay alguien que se acuerda de ti, aunque no te escriba. Que duermas rico, que no te duela nada y que mañana despiertes sin ese cansancio.",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Crees en las coincidencias?",
+    respuesta: "🔮 No me imaginaba nada... pero el destino me cruzó con la persona por la que hoy pido siempre a las 11:11. Y esa eres tú, Gabi.",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Puedo pedir un deseo yo también?",
+    respuesta: "🧸 Mi deseo es que cuando estés cansada de los turnos largos, te duelan los ojitos o tengas un día pesado, no te lo guardes sola. Háblame, aunque sea para cambiar de tema y reírnos un rato. Yo no me voy a ir a ningún lado.",
+    isLocked: false
+  },
+  {
+    pregunta: "Si a las 11:11 pudieras pedirme algo y yo te lo cumplo... ¿qué me pedirías?",
+    respuesta: "🌟 Yo por mi parte ya lo pedí: que me dejes seguir acompañándote y cuidándote.",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Sabes qué es lo que más me gusta de las 11:11?",
+    respuesta: "💫 Que es la única excusa perfecta para sonreír mirando la pantalla del celular acordándome de ti.",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Crees que una persona puede ser tu lugar favorito?",
+    respuesta: "💗 Porque te juro que tú eres mi lugar favorito, Gabi. Contigo me pongo tranquilo, me río un montón y me dan ganas de ser mejor persona.",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Te puedo hacer una pregunta trampa?",
+    respuesta: "🎯 A ver... si te digo que eres bonita, ¿me vas a creer o voy a tener que recordártelo todos los días hasta que por fin me creas?",
+    isLocked: false
+  },
+  {
+    pregunta: "¿Te imaginas cómo sería si nos tocara coincidir más seguido?",
+    respuesta: "🚀 Yo sí me lo imagino. Tú riendote y yo intentando hacerte reír.",
+    isLocked: false
+  },  
+  {
+    pregunta: "Haz clic aquí, pero cierra los ojos primero...",
+    respuesta: "✨ ¿Ya pediste tu deseo? El mío ya se cumplió con solo saber que abriste esto y estás sonriendo. Feliz 11:11, Gabi. Que seas muy feliz a tu manera y sin que nadie te apure.",
+    isLocked: false
+  },
+  {
+    pregunta: "🔓 Último sobre secreto (Requiere contraseña)...",
+    respuesta: "🤍 **¿Me prometes algo? Solo por hoy...No te voy a pedir que cambies de opinión ni nada raro. Solo prométeme que hoy te vas a dejar engreír un poquito, sin presiones. Sigue riéndote siempre y recuerda que aquí estoy yo para ayudarte, a tu ritmo y a tu tiempo. ",
+    isLocked: true
+  }
+];
+
+let indicePreguntaActual = 0;
+const surpriseQuestionText = document.getElementById("surpriseQuestionText");
+const surpriseAnswerText = document.getElementById("surpriseAnswerText");
+const surpriseButton = document.getElementById("surpriseButton");
+const finalSurprise = document.getElementById("finalSurprise");
+const lockedBox = document.getElementById("lockedBox");
+const passwordInput = document.getElementById("passwordInput");
+const unlockBtn = document.getElementById("unlockBtn");
+const errorMsg = document.getElementById("errorMsg");
+
+function mostrarPreguntaActual() {
+  const item = ultimasPreguntas[indicePreguntaActual];
+  surpriseQuestionText.textContent = item.pregunta;
+  
+  if (item.isLocked) {
+    surpriseAnswerText.innerHTML = "Este mensaje está bajo llave... 🔐";
+    lockedBox.hidden = false;
+    passwordInput.value = "";
+  } else {
+    surpriseAnswerText.innerHTML = item.respuesta;
+    lockedBox.hidden = true;
+  }
+}
+mostrarPreguntaActual();
+
+surpriseButton.addEventListener("click", () => {
+  const item = ultimasPreguntas[indicePreguntaActual];
+  if (item.isLocked && lockedBox.hidden === false) {
+    passwordInput.focus();
+    return;
+  }
+ 
+
+  const isHidden = finalSurprise.hidden;
+  finalSurprise.hidden = !isHidden;
+  
+  if (isHidden) {
+    if (item.isLocked) {
+      surpriseButton.textContent = "Ingresa la contraseña arriba ☝️";
+    } else {
+      surpriseButton.textContent = "Siguiente pregunta ✨";
+    }
+    lanzarConfetti();
+    finalSurprise.scrollIntoView({ behavior: "smooth", block: "center" });
+  } else {
+    indicePreguntaActual = (indicePreguntaActual + 1) % ultimasPreguntas.length;
+    mostrarPreguntaActual();
+    finalSurprise.hidden = true;
+    surpriseButton.textContent = "Descubrir otra sorpresa ✨";
+  }
+});
+
+function verificarPassword() {
+  const val = passwordInput.value.trim().toLowerCase();
+  if (val === "11:11" || val === "1111" || val === "4 de septiembre" || val === "septiembre" || val === "gabi") {
+    lockedBox.hidden = true;
+    errorMsg.hidden = true;
+    const item = ultimasPreguntas[indicePreguntaActual];
+    surpriseAnswerText.innerHTML = item.respuesta;
+    surpriseButton.textContent = "¡Sorpresa desbloqueada con éxito! ✨ (Siguiente)";
+    lanzarConfetti();
+  } else {
+    errorMsg.hidden = false;
+    passwordInput.style.borderColor = "#ff99aa";
+    setTimeout(() => { errorMsg.hidden = true; }, 3000);
+  }
+}
+
+unlockBtn.addEventListener("click", verificarPassword);
+passwordInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") verificarPassword();
+});
+
+/* 8. Confeti Animado */
+function lanzarConfetti() {
+  const box = document.getElementById("confetti");
+  if (!box) return;
+  const emojis = ["✨", "💜", "🌸", "⭐", "💗", "✦", "🧸"];
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement("span");
+    s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    s.className = "confetti-piece";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDelay = (Math.random() * 0.6) + "s";
+    s.style.fontSize = (16 + Math.random() * 16) + "px";
+    box.appendChild(s);
+    setTimeout(() => s.remove(), 2800);
+  }
+}
+
+/* 9. Jardín Interactivo */
+const opened = new Set();
+const gardenPot = document.getElementById("gardenPot");
+const gardenText = document.getElementById("gardenText");
+const gardenBar = document.getElementById("gardenBar");
+const gardenCount = document.getElementById("gardenCount");
+const plantHint = document.getElementById("plantHint");
+
+function actualizarJardin() {
+  const n = opened.size;
+  
+  if (gardenPot) {
+    if (n === 0) {
+      gardenPot.innerHTML = '<div class="plant-item" data-index="0" title="Haz clic para leer mensaje">🌱</div>';
+    } else if (n === 1) {
+      gardenPot.innerHTML = '<div class="plant-item" data-index="0" title="Ver mensaje">🌱</div><div class="plant-item" data-index="1" title="Ver mensaje">🌿</div>';
+    } else if (n === 2) {
+      gardenPot.innerHTML = '<div class="plant-item" data-index="0" title="Ver mensaje">🌱</div><div class="plant-item" data-index="1" title="Ver mensaje">🌿</div><div class="plant-item" data-index="2" title="Ver mensaje">🌷</div>';
+    } else if (n >= 3) {
+      gardenPot.innerHTML = '<div class="plant-item" data-index="0" title="Ver mensaje">🌱</div><div class="plant-item" data-index="1" title="Ver mensaje">🌿</div><div class="plant-item" data-index="2" title="Ver mensaje">🌷</div><div class="plant-item" data-index="3" title="Ver mensaje">🌸</div>';
+    }
+
+    document.querySelectorAll(".plant-item").forEach(el => {
+      el.addEventListener("click", () => {
+        abrirMensajePlanta(parseInt(el.dataset.index));
+      });
+    });
+  }
+
+  if (n > 0 && plantHint) plantHint.hidden = false;
+  if (gardenBar) gardenBar.style.width = (n / 3 * 100) + "%";
+  if (gardenCount) gardenCount.textContent = n + " de 3 cartitas descubiertas";
+  
+  if (gardenText) {
+    if (n === 0) gardenText.textContent = "Abre los meses disponibles para regar y hacer crecer tu jardincito.";
+    if (n === 1) gardenText.textContent = "¡Ya brotó algo hermoso! Haz clic sobre tu plantita para leer su mensaje.";
+    if (n === 2) gardenText.textContent = "¡Casi florece por completo! Haz clic en tus plantitas para ver qué te dicen.";
+    if (n >= 3) gardenText.textContent = "¡Floreció al máximo! 11:11 — Haz clic en cualquiera de tus flores y descubre su magia 💜🌿";
+  }
+}
+actualizarJardin();
+
+/* 10. Contador Hacia las 11:11 */
+const countdownEl = document.getElementById("countdown");
+function tick() {
+  if (!countdownEl) return;
+  const ahora = new Date();
+  let meta = new Date();
+  meta.setHours(11, 11, 0, 0);
+  if (ahora.getTime() > meta.getTime() + 60000) {
+    meta.setDate(meta.getDate() + 1);
+  }
+  const diff = meta - ahora;
+  if (Math.abs(diff) < 60000) {
+    countdownEl.textContent = "¡ES 11:11! ✨ ¡Pide tu deseo ahora mismo, Gabicita! 💜";
+    return;
+  }
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const pad = (n) => String(n).padStart(2, "0");
+  countdownEl.textContent = "Faltan " + pad(h) + ":" + pad(m) + ":" + pad(s) + " para pedir tu deseo 🌙";
+}
+tick();
+setInterval(tick, 1000);
+
+/* 11. Control de Audio Botón Manual */
+if (musicBtn && music) {
+  musicBtn.addEventListener("click", () => {
+    if (music.paused) {
+      music.play().then(() => {
+        musicBtn.classList.add("playing");
+        musicBtnText.textContent = "Pausar música especial";
+      }).catch(() => {
+        musicBtnText.textContent = "♪ Coloca cancion.mp3 en /music";
+      });
+    } else {
+      music.pause();
+      musicBtn.classList.remove("playing");
+      musicBtnText.textContent = "Reproducir música especial";
+    }
+  });
+}
+
+/* 12. Modal Handlers */
+function openLetter(month) {
+  if (openMonth !== null) return;
+  const letter = letters[month];
+  if (!letter) return;
+  openMonth = month;
+  lastFocusedElement = document.activeElement;
+  letterEyebrow.textContent = letter.eyebrow;
+  letterTitle.textContent = letter.title;
+  letterSignature.textContent = letter.signature;
+  letterMessage.innerHTML = letter.paragraphs.join("");
+  modal.hidden = false;
+  document.body.style.overflow = "hidden";
+  closeLetter.focus();
+  
+  if (month === "november") {
+    lanzarConfetti();
+    setTimeout(() => {
+      const btnMore = document.getElementById("open50Wishes");
+      if(btnMore) {
+        btnMore.addEventListener("click", () => {
+          wishesModal.hidden = false;
+          lanzarConfetti();
+        });
+      }
+    }, 100);
+  }
+  opened.add(month);
+  actualizarJardin();
+}
+
+function closeModal() {
+  if (openMonth === null) return;
+  openMonth = null;
+  modal.hidden = true;
+  document.body.style.overflow = "";
+  if (lastFocusedElement) lastFocusedElement.focus();
+}
+
+function closeWishes() {
+  wishesModal.hidden = true;
+}
+
+monthButtons.forEach((b) => {
+  b.addEventListener("click", () => openLetter(b.dataset.month));
+});
+
+closeLetter.addEventListener("click", closeModal);
+closeLetterButton.addEventListener("click", closeModal);
+closeWishesModal.addEventListener("click", closeWishes);
+closeWishesBtn.addEventListener("click", closeWishes);
+
+modal.addEventListener("click", (e) => {
+  if (e.target.dataset.close === "true") closeModal();
+});
+wishesModal.addEventListener("click", (e) => {
+  if (e.target.dataset.closeWishes === "true") closeWishes();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (openMonth !== null) closeModal();
+    if (!wishesModal.hidden) closeWishes();
+    if (!plantModal.hidden) cerrarMensajePlanta();
+    if (!meaningModal.hidden) cerrarMeaning();
+  }
+});
+</script>
+</body>
+</html>
